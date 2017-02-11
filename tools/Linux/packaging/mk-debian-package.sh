@@ -22,6 +22,7 @@
 RELEASEV=${RELEASEV:-"auto"}
 VERSION_PREFIX=${VERSION_PREFIX:-""}
 TAG=${TAG}
+TAGREV=${TAGREV:-""}
 REPO_DIR=${WORKSPACE:-$(cd "$(dirname $0)/../../../" ; pwd)}
 [[ $(which lsb_release) ]] && DISTS=${DISTS:-$(lsb_release -cs)} || DISTS=${DISTS:-"stable"}
 ARCHS=${ARCHS:-$(dpkg --print-architecture)}
@@ -145,7 +146,7 @@ function buildDebianPackages {
                 DIST=$dist ARCH=$arch $BUILDER $PDEBUILD_OPTS
                 [ $? -eq 0 ] && uploadPkg || exit 1
             else
-                $BUILDER $DEBUILD_OPTS
+                $BUILDER $-Z
                 echo "output directory: $REPO_DIR/.."
             fi
         done
